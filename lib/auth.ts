@@ -144,3 +144,50 @@ export async function refreshAccessToken(): Promise<boolean> {
     return false
   }
 }
+
+export async function getSession(): Promise<Session | null> {
+  const cookieStore = await cookies()
+  const accessToken = cookieStore.get("accessToken")?.value
+  const refreshToken = cookieStore.get("refreshToken")?.value
+  const userJson = cookieStore.get("user")?.value
+  const tokenExpiry = cookieStore.get("tokenExpiry")?.value
+
+  if (!accessToken || !refreshToken || !userJson || !tokenExpiry) {
+    return null
+  }
+
+  // Check if token is expired
+  const isExpired = new Date(tokenExpiry) <= new Date()
+
+  if (isExpired) {
+    // Try to refresh the token
+    const refreshed = await refreshAccessToken()
+    if (!refreshed) {
+      return null
+    }
+  }
+
+  try {
+    const user = JSON.parse(userJson) as User
+    const newAccessToken = cookieStore.get("accessToken")?.value || accessToken
+    const newRefreshToken = cookieStore.get("refreshToken")?.value || refreshToken
+    const newTokenExpiry = cookieStore.get("tokenExpiry")?.value || tokenExpiry
+    const refreshTokenExpiry = cookieStore.get("refreshTokenExpiry")?.value || ""
+
+    return {
+      accessToken: newAccessToken,
+      refreshToken: newRefreshToken,
+      accessTokenExpiresAt: newTokenExpiry,
+      refreshTokenExpiresAt: refreshTokenExpiry,
+      user,
+    }
+  } catch (error) {
+    console.error("Session parsing error:", error)
+    return null
+  }
+}
+
+export async function getAccessToken(): Promise<string | null> {
+  const session = await getSession()
+  return session?.accessToken || null
+}
