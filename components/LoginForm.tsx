@@ -9,6 +9,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { toast } from "sonner";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { login } from "@/lib/auth";
 
 const formSchema = z.object({
     username: z.string().min(1, "Username is required"),
@@ -60,7 +61,7 @@ const LoginForm = () => {
           <CardHeader>
             <CardTitle className="text-2xl">Login</CardTitle>
             <CardDescription>
-              Enter your email below to login to your account
+            Enter your credentials to access your dashboard
             </CardDescription>
           </CardHeader>
           <CardContent>
