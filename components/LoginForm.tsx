@@ -50,6 +50,7 @@ const LoginForm = () => {
             
             description: "An unexpected error occurred. Please try again.",
           })
+          console.log(error)
         } finally {
           setIsLoading(false)
         }
