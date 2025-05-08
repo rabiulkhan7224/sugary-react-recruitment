@@ -1,4 +1,4 @@
-Thanks! I've added the **live demo link** to the appropriate sections in your README. Here's the updated version with the deployment URL:
+
 
 ```markdown
 # Sugary React Recruitment Project
