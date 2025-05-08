@@ -9,10 +9,7 @@ interface MaterialsResponse extends BaseMaterialsResponse {
 
 const API_URL = "https://sugarytestapi.azurewebsites.net"
 
-/**
- * Fetch materials with pagination
- * This function needs to be called from a client component that can provide the access token
- */
+
 export async function getMaterials(skip = 0, limit = 20, clientAccessToken?: string): Promise<MaterialsResponse> {
   // Use the token provided by the client
   const accessToken = clientAccessToken
@@ -30,17 +27,13 @@ export async function getMaterials(skip = 0, limit = 20, clientAccessToken?: str
   const encodedFilter = Buffer.from(JSON.stringify(filter)).toString("base64")
 
   try {
-    console.log(`Making API request to ${API_URL}/Materials/GetAll?filter=${encodedFilter}`)
 
     // Simple fetch without headers as requested
     const response = await fetch(`${API_URL}/Materials/GetAll?filter=${encodedFilter}`, {
       cache: "no-store",
     })
 
-    // First check the response status
-    console.log(`API response status: ${response.status} ${response.statusText}`)
-
-    // Handle 401 Unauthorized - try to refresh the token
+    
     if (response.status === 401) {
       console.log("Token expired, attempting to refresh")
       const refreshed = await refreshAccessToken()

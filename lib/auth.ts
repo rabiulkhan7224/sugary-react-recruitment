@@ -12,7 +12,7 @@ const COOKIE_NAMES = {
   USER: "user",
 }
 
-// LocalStorage keys
+
 
 
 // Cookie options
@@ -163,10 +163,7 @@ export async function refreshAccessToken(): Promise<{ success: boolean; token?: 
   }
 
   try {
-    // We need to get the access token from the client
-    // This is a server action, so we can't access localStorage directly
-    // For refresh, we'll just use an empty string for the access token
-    // The API should still refresh based on the refresh token
+    
 
     const response = await fetch(`${API_URL}/Account/RefreshToken`, {
       method: "POST",

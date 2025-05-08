@@ -119,7 +119,7 @@ export default function MaterialsList() {
     if (inView && !isLoading && hasMore) {
       loadMaterials(skip)
     }
-  }, [inView, isLoading, hasMore])
+  }, [inView, isLoading, hasMore, skip])
 
   if (error) {
     return (
